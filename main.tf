@@ -190,6 +190,19 @@ resource "aws_instance" "frontend" {
   }
 }
 
+# 모니터링 서버 (퍼블릭 서브넷에 배치)
+resource "aws_instance" "monitoring" {
+  ami           = "ami-062cf18d655c0b1e8"
+  instance_type = "t2.micro"
+  key_name      = "my-ec2-keypair" # key_name.pem
+  subnet_id     = aws_subnet.public.id
+  vpc_security_group_ids = [aws_security_group.main.id]
+
+  tags = {
+    Name = "Monitoring-pingpong"
+  }
+}
+
 
 output "instance_ips" {
   value = [
